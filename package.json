@@ -11,7 +11,7 @@
     "server-dev": "nodemon src/server --exec babel-node src/server",
     "start-dev": "concurrently \"npm run server-dev\" \"npm run dev\"",
     "server-spec": "babel-node src/server/server.spec",
-    "start": "npm run server"
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
