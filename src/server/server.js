@@ -1,15 +1,22 @@
-import express from 'express'
-import cors from 'cors'
-import bodyParser from 'body-parser'
+let express = require('express')
+let cors = require('cors')
+let bodyParser = require('body-parser')
 import { connectDB } from './connect-db'
 import './initialize-db';
 import { authenticationRoute } from './authenticate'
-import path from 'path'
+let path = require('path')
+const favicon = require("serve-favicon");
+const logger = require("morgan");
+require("dotenv").config();
 
 let port = process.env.PORT || 7777;
 let app = express()
 
 // set middleware 
+app.use(logger("dev"));
+app.use(express.json());
+app.use(favicon(path.join(dirname, "build", "favicon.ico")));
+app.use(express.static(path.join(dirname, "build")));
 
 app.use(
     cors(),
@@ -20,9 +27,9 @@ app.use(
 
 authenticationRoute(app);
 
-if(process.env.NODE_ENV == `production`){
-    app.use(express.static(path.resolve(__dirname,`../../dist`)));
-    app.get('/*',(req,res)=>{
+if (process.env.NODE_ENV == `production`) {
+    app.use(express.static(path.resolve(__dirname, `../../dist`)));
+    app.get('/*', "build", (req, res) => {
         res.sendFile(path.resolve('index.html'));
     })
 }
